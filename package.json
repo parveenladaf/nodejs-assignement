@@ -1,0 +1,17 @@
+{
+  "name": "parveen",
+  "version": "1.0.0",
+  "description": "send welcome mail to users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "user"
+  ],
+  "author": "parveen ladaf",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
