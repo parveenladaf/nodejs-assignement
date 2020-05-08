@@ -11,14 +11,18 @@ class UserManager {
 
     try {
       const userRepositoryObj = new UserRepository();
-      const result = await userRepositoryObj.saveUserData(userData, connection);
-      if ((result.affectedRows = 1)) {
+      const response = await userRepositoryObj.saveUserData(
+        userData,
+        connection
+      );
+      if ((response.affectedRows = 1)) {
         const userMailObj = new SendMail();
         const result = await userMailObj.sendMail(userData.email_id);
-        if (result) {
-          connection.commit();
-        } else {
+        if (result.statusCode) {
           connection.rollback();
+        } else {
+          connection.commit();
+          return response;
         }
       }
     } catch (error) {

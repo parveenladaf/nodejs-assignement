@@ -4,7 +4,8 @@
   "description": "send welcome mail to users",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -u bdd --timeout 999999 --colors test/user.test.js",
+    "debug": "nodemon --inspect index.js"
   },
   "keywords": [
     "user"
@@ -20,5 +21,9 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.6",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
   }
 }

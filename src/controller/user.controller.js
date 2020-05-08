@@ -14,10 +14,13 @@ class UserController {
     try {
       const userObj = new UserLogin();
       const result = await userObj.login(req.body);
+      if (result) {
         return res.send({
           success: true,
-          message: result.message,
+          message: "User has been login successfully",
         });
+      }
+      res.status(400).send("Bad Request");
     } catch (error) {
       res.status(400).send("Bad Request");
     }

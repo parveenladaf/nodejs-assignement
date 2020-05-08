@@ -7,7 +7,7 @@ class UserRepository {
       try {
         const connection = await connProvider.getConnection();
         connection.query(
-          `SELECT * FROM user_data where email_id = ?`,
+          `SELECT email_id FROM user_data where email_id = ?`,
           [emailId],
           async (err, result) => {
             if (err) {
