@@ -20,16 +20,18 @@ class UserMail {
         };
 
         var msg;
+        const ErrorLogObj = new ErrorLog();
         await mailgun.messages().send(data, function (err, res) {
           if (res.id) {
-            const ErrorLogObj = new ErrorLog();
             msg = err.message;
             ErrorLogObj.createJsonForError(msg);
             resolve(res);
-          }else {
+          } else {
+            msg = err.message;
+            ErrorLogObj.createJsonForError(msg);
             reject(err);
           }
-        }); 
+        });
       } catch (error) {
         throw error;
       }
