@@ -12,7 +12,6 @@ class UserMail {
           apiKey: api_key,
           domain: domain,
         });
-        // emailId = 'parveenladaf26@gmail.com';
         var data = {
           from: "parveenladaf26@gmail.com",
           to: emailId,
@@ -22,13 +21,13 @@ class UserMail {
 
         var msg;
         await mailgun.messages().send(data, function (err, res) {
-          if (err) {
+          if (res.id) {
             const ErrorLogObj = new ErrorLog();
             msg = err.message;
             ErrorLogObj.createJsonForError(msg);
-            resolve(err);
-          }else {
             resolve(res);
+          }else {
+            reject(err);
           }
         }); 
       } catch (error) {
