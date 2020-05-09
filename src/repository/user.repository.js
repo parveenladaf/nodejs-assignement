@@ -1,47 +1,34 @@
 "use strict";
-const connProvider = require("../connection.provider");
+
+const util = require("util");
+
+const ConnectionProvider = require("../connection.provider");
 
 class UserRepository {
-  async getUserData(emailId) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const connection = await connProvider.getConnection();
-        connection.query(
-          `SELECT email_id FROM user_data where email_id = ?`,
-          [emailId],
-          async (err, result) => {
-            if (err) {
-              reject(err);
-            }
-            if (result) {
-              resolve(result);
-            }
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
+  constructor(connection) {
+    this.connection = connection;
+    this.query = util.promisify(this.connection.query).bind(this.connection);
   }
 
-  async saveUserData(param, connection) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        connection.query(
-          `insert into user_data (first_name, last_name, email_id, password)
-           values (?, ?, ?, ?)`,
-          [param.first_name, param.last_name, param.email_id, param.password],
-          async (err, result) => {
-            if (err) {
-              reject(err);
-            }
-            resolve(result);
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
+  async findByEmailId(emailId) {
+    try {
+      const user = await this.query(
+        `select email_id from user_data where email_id = ? limit 1;`,
+        [emailId]
+      );
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async save(user) {
+    try {
+      const result = await this.query(`insert into user_data set ?;`, [user]);
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 }
 

@@ -1,28 +1,30 @@
 "use strict";
-const UserLogin = require("../biz/user.login");
 
+const UserManager = require("../biz/user.manager");
+const ErrorManager = require("../biz/error.manager");
+
+const STATUS = require("../constant/status");
+const HEADER = require("../constant/header");
 /**
  * Authentication Controller for handling login.
  */
 class UserController {
-  async login(req, res) {
-    // If request content is not in json then return error.
-    if (!req.body) {
-      res.status(400).send("Bad Request");
-      console.log(req.body);
-    }
+  /**
+   * default constructor
+   */
+  constructor() {
+  }
+
+  async register(req, res) {
     try {
-      const userObj = new UserLogin();
-      const result = await userObj.login(req.body);
-      if (result) {
-        return res.send({
-          success: true,
-          message: "User has been login successfully",
-        });
-      }
-      res.status(400).send("Bad Request");
-    } catch (error) {
-      res.status(400).send("Bad Request");
+      const userManager = new UserManager();
+      const result = await userManager.register(req.body);
+      return res
+        .status(STATUS.OK)
+        .header(HEADER.CONTENT_TYPE, HEADER.JSON)
+        .send(JSON.stringify(result));
+    } catch (err) {
+      res.status(err.status || STATUS.ERROR).send(ErrorManager.format(err));
     }
   }
 }

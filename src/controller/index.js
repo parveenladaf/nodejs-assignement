@@ -2,5 +2,5 @@
 const UserController = require('./user.controller');
 
 module.exports = {
-    'auth': new UserController()
+    userController: new UserController()
 };
