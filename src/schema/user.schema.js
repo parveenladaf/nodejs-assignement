@@ -20,5 +20,5 @@ module.exports = {
       description: "email",
     },
   },
-  required: ["email_id"],
+  required: ["first_name", "last_name", "password", "email_id"],
 };

@@ -4,8 +4,9 @@
   "description": "send welcome mail to users",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -u bdd --timeout 999999 --colors test/user.test.js",
-    "debug": "nodemon --inspect index.js"
+    "test": "mocha -u bdd --timeout 999999 --colors test/*.test.js",
+    "debug": "nodemon --inspect index.js",
+    "start": "node index.js"
   },
   "keywords": [
     "user"
