@@ -33,15 +33,13 @@ class UserManager {
         `Validation completed with result ${validationResult.valid}`
       );
       if (validationResult.valid) {
-        this.logger.info(
-          `Begining transaction for email ${userData.email_id}`
-        );
+        this.logger.info(`Begining transaction for email ${userData.email_id}`);
         this.connection.beginTransaction();
         this.logger.info(
           `Checking if user exist for email ${userData.email_id}`
         );
         const user = await this.userRepository.findByEmailId(userData.email_id);
-        if (user && user.length > 0) {
+        if (user) {
           this.logger.warn(`User already exist for email ${userData.email_id}`);
           throw new DuplicateEntityError(MESSAGE.DUPLICATE_USER);
         }
@@ -74,13 +72,22 @@ class UserManager {
         this.logger.error(
           `Validation failed for email ${userData.email_id} with errors ${validationResult.errors}`
         );
-        throw new ValidationError(MESSAGE.VALIDATION_ERROR);
+        throw new ValidationError(
+          MESSAGE.VALIDATION_ERROR,
+          validationResult.errors
+        );
       }
     } catch (error) {
-      this.logger.error(`Mail not sent for ${userData.email_id} email id because ${error.message}`);
+      this.logger.error(
+        `Mail not sent for ${userData.email_id} email id because ${error.message}`
+      );
       this.connection.rollback();
       throw error;
     }
+  }
+
+  async testUser(emailId) {
+    return await this.userRepository.findByEmailId(emailId);
   }
 }
 module.exports = UserManager;
