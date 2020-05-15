@@ -12,8 +12,7 @@ class UserController {
   /**
    * default constructor
    */
-  constructor() {
-  }
+  constructor() {}
 
   async register(req, res) {
     try {

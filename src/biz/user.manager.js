@@ -39,7 +39,7 @@ class UserManager {
           `Checking if user exist for email ${userData.email_id}`
         );
         const user = await this.userRepository.findByEmailId(userData.email_id);
-        if (user) {
+        if (user.length > 0) {
           this.logger.warn(`User already exist for email ${userData.email_id}`);
           throw new DuplicateEntityError(MESSAGE.DUPLICATE_USER);
         }
@@ -86,8 +86,5 @@ class UserManager {
     }
   }
 
-  async testUser(emailId) {
-    return await this.userRepository.findByEmailId(emailId);
-  }
 }
 module.exports = UserManager;
